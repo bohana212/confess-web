@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Confess Untukmu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: linear-gradient(145deg, #0f0f0f, #1c1c1c);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+      position: relative;
+    }
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    input, button {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      margin: 10px 0;
+      width: 100%;
+      max-width: 350px;
+    }
+    input {
+      background: #2a2a2a;
+      color: white;
+      outline: none;
+    }
+    button {
+      background: #00c3ff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #009cd8;
+    }
+    #gombalan {
+      font-size: 20px;
+      margin: 20px 0;
+      max-width: 500px;
+      text-align: center;
+      white-space: pre-wrap;
+      animation: fadeIn 1s ease forwards;
+    }
+    .hidden { display: none; }
+    .love-fall {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .love {
+      position: absolute;
+      font-size: 24px;
+      color: #ff4d6d;
+      animation: fall 6s ease-in infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10%); opacity: 0.8; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #tolakBtn {
+      position: relative;
+      background: #333;
+    }
+    #terimaBtn {
+      background: #00ff88;
+      color: black;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="love-fall" id="loveFall"></div>
+  <h2 id="judul">Masukkan Namamu Dulu ya!</h2>
+  <input type="text" id="namaTarget" placeholder="Nama Kamu">
+  <button onclick="lanjutConfess()">Lanjut</button>
+
+  <div id="bagianConfess" class="hidden">
+    <div id="gombalan"></div>
+    <button id="terimaBtn" onclick="terimaConfess()">Iyaa Mau ❤️</button>
+    <button id="tolakBtn" onclick="tolakConfess()">Gak Mau 💔</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(location.search);
+    const namaPengirim = urlParams.get('from') || 'Seseorang';
+    const noWa = urlParams.get('wa') || '';
+
+    const gombalans = [
+      `Aku suka kamu dari dulu, tapi baru berani ngomong sekarang...`,
+      `Bolehkah aku jadi alasan kamu bahagia setiap hari?`,
+      `Kalau kamu jadi malam, aku rela jadi bintang yang selalu menemanimu.`,
+      `Namamu selalu muncul di pikiranku, bahkan ketika aku berusaha untuk tidur.`,
+      `Boleh aku nembak kamu? Tapi jangan pakai peluru, cukup dengan cinta.`,
+      `Aku bukan orang sempurna, tapi aku bisa jamin cintaku ke kamu gak setengah-setengah.`,
+    ];
+
+    function getRandomGombal() {
+      return gombalans[Math.floor(Math.random() * gombalans.length)] + `\n\n- ${namaPengirim}`;
+    }
+
+    function lanjutConfess() {
+      const nama = document.getElementById('namaTarget').value.trim();
+      if (!nama) return alert('Masukkan namamu dulu ya!');
+
+      document.getElementById('judul').style.display = 'none';
+      document.getElementById('namaTarget').style.display = 'none';
+      event.target.style.display = 'none';
+
+      document.getElementById('bagianConfess').classList.remove('hidden');
+      document.getElementById('gombalan').innerText = getRandomGombal();
+
+      for (let i = 0; i < 30; i++) {
+        let love = document.createElement('div');
+        love.className = 'love';
+        love.style.left = Math.random() * 100 + '%';
+        love.style.animationDuration = (Math.random() * 4 + 4) + 's';
+        love.style.fontSize = (Math.random() * 16 + 14) + 'px';
+        love.innerText = '❤️';
+        document.getElementById('loveFall').appendChild(love);
+      }
+    }
+
+    function terimaConfess() {
+      const nama = document.getElementById('namaTarget').value;
+      const balasan = `Aku juga suka kamu! Kita jadian sekarang ya! ❤️\n\n- dari ${nama}`;
+      if (noWa) {
+        window.location.href = `https://wa.me/${noWa}?text=${encodeURIComponent(balasan)}`;
+      } else {
+        alert('Nomor WhatsApp tidak valid!');
+      }
+    }
+
+    function tolakConfess() {
+      const btn = document.getElementById('tolakBtn');
+      btn.style.position = 'absolute';
+      btn.style.top = Math.random() * 80 + '%';
+      btn.style.left = Math.random() * 80 + '%';
+      btn.innerText = 'Eits Gak Bisa Klik 😝';
+    }
+  </script>
+</body>
+</html>
