@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Buat Link Confess</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }input, button {
+  width: 280px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  transition: 0.3s ease;
+}
+
+input {
+  background: #1f1f1f;
+  color: #fff;
+  outline: none;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+button {
+  background: linear-gradient(135deg, #00c3ff, #0077ff);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 123, 255, 0.3);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 123, 255, 0.5);
+}
+
+#copyBtn {
+  background: linear-gradient(135deg, #00ffa3, #00ff7f);
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+#result {
+  margin-top: 20px;
+  display: none;
+  text-align: center;
+}
+
+  </style>
+</head>
+<body>
+  <h2>Buat Link Confess Kamu</h2>
+  <input type="text" id="yourName" placeholder="Nama Kamu">
+  <input type="text" id="yourWa" placeholder="Nomor WhatsApp Kamu (628xxx)">
+  <button onclick="buatLink()">❤️¨ Buat Link Sekarang</button>  <div id="result">
+    <p>Salin link dan kirim ke target kamu:</p>
+    <input type="text" id="linkConfess" readonly>
+    <button id="copyBtn" onclick="copyLink()">💌“‹ Copy Link</button>
+  </div>  <script>
+    function buatLink() {
+      const nama = encodeURIComponent(document.getElementById('yourName').value.trim());
+      const wa = encodeURIComponent(document.getElementById('yourWa').value.trim());
+
+      if (!nama || !wa) {
+        alert("Isi nama & nomor WhatsApp dulu!");
+        return;
+      }
+
+      const link = `${location.origin}/confess.html?from=${nama}&wa=${wa}`;
+      document.getElementById('linkConfess').value = link;
+      document.getElementById('result').style.display = 'block';
+    }
+
+    function copyLink() {
+      const input = document.getElementById("linkConfess");
+      input.select();
+      input.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(input.value).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerText = "âœ… Link Tersalin!";
+        setTimeout(() => {
+          btn.innerText = "ðŸ“‹ Copy Link";
+        }, 2000);
+      });
+    }
+  </script></body>
+</html>
